@@ -86,6 +86,24 @@ head(resume)
 grade_code()
 ```
 
+
+
+- Use the `head` function to show the first six lines of the `resume` data.
+
+
+```{r head-2, exercise=TRUE}
+## print the first 6 lines of the data
+
+```
+
+```{r head-2-solution}
+head(resume)
+```
+
+```{r head-2-check}
+grade_code()
+```
+
 - Print out the dimension of the `resume` data.
 
 
