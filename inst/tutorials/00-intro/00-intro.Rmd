@@ -15,6 +15,7 @@ description: "This tutorial will introduce you to the basics of R."
 library(gradethis)
 library(learnr)
 library(qsslearnr)
+library(tidyverse)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
 tut_reptitle <- "QSS Tutorial 0: Output Report"
@@ -549,6 +550,73 @@ UNpop[5:7, "world.pop"]
 ```{r rowcols-check}
 grade_code()
 ```
+
+### Subsetting in tidyverse (III)
+
+tidyverse generally uses aptly-named functions instead of base R code. Here, instead of using brackets or dollar signs, we'll begin by using `slice()` and `select()`
+
+- `slice()` lets us filter rows by number or other criteria
+- `select()` lets us filter columns by name, number, or other criteria.
+
+As with nearly all tidyverse functions, the first input to each function is going to be your dataset. The second input is the subsetting criteria. Note that in tidyverse, when naming columns to select, you generally do *not* surround the variable name with quotes -- this is different from base R and is important to keep in mind if you switch back and forth.
+
+- `select(mydata, myvar)` will select the `myvar` column from `mydata`
+- `slice(mydata, 1)` will select the first row of `mydata`
+- `slice(mydata, c(1,2,3))` will select the first three rows of `mydata`
+- `select(slice(mydata, 1:3), myvar)` will select the first three values of the `myvar` variable of `mydata`
+
+#### Exercises
+
+- Use the tidyverse `select()` to extract and print the `world.pop` variable from the `UNpop` data frame.
+
+```{r brackets-tidy, exercise = TRUE, exercise.setup = "unpop"}
+## use select() to print out the world.pop variable
+
+```
+
+```{r brackets-tidy-solution}
+select(UNpop, world.pop)
+```
+
+```{r brackets-tidy-check}
+grade_code()
+```
+
+
+
+- Use the tidyverse `slice()` to extract and print rows 5 through 7 of the `UNpop` data frame.
+
+
+```{r rows-tidy, exercise = TRUE, exercise.setup = "unpop"}
+## extract rows 5 through 7 and all variables
+
+```
+
+```{r rows-tidy-solution}
+slice(UNpop, 5:7)
+```
+
+```{r rows-tidy-check}
+grade_code()
+```
+
+
+- Use the bracket commands to extract and print rows 5 through 7 of the `world.pop` variable of the `UNpop` data frame.
+
+
+```{r rowcols-tidy, exercise = TRUE, exercise.setup = "unpop"}
+## extract values 5 through 7 of the world.pop variable
+
+```
+
+```{r rowcols-tidy-solution}
+select(slice(UNpop, 5:7), world.pop)
+```
+
+```{r rowcols-tidy-check}
+grade_code()
+```
+
 
 
 ## Submit
