@@ -601,7 +601,7 @@ grade_code()
 ```
 
 
-- Use the bracket commands to extract and print rows 5 through 7 of the `world.pop` variable of the `UNpop` data frame.
+- Use `select()` and `slice()` to extract and print rows 5 through 7 of the `world.pop` variable of the `UNpop` data frame.
 
 
 ```{r rowcols-tidy, exercise = TRUE, exercise.setup = "unpop"}
@@ -617,6 +617,162 @@ select(slice(UNpop, 5:7), world.pop)
 grade_code()
 ```
 
+### Piping
+
+Nesting `slice()` inside of `select()` works, but looks a little messy -- and imagine how messy it would look if we were trying to nest five or six functions! Luckily, tidyverse has a special operator for linking commands together called the pipe operator: `%>%`. The pipe operator tells R to take the previous output and pipe it into the next command as its input. This is going to become one of your most used commands in R -- we'll use it nearly every time we do data analysis with more than one step.
+
+For example, if we want to select the first three values of the `myvar` variable of `mydata` using tidyverse pipe syntax, we would do:
+
+```{r, eval = FALSE, echo = TRUE}
+mydata %>% # begin with mydata, and then...
+  slice(1:3) %>% # subset the first three rows, and then...
+  select(myvar) # subset the myvar column
+```
+
+Note that we generally put the original dataset on a line by itself and pipe it into the first function, rather than supplying it as the first input. This makes your code easier to read -- anyone looking at it can tell which dataset you've started with and what subsetting you've done to it.
+
+#### Exercise
+
+- Using `%>%` to chain commands together, use `select()` and `slice()` to extract and print rows 5 through 7 of the `world.pop` variable of the `UNpop` data frame.
+
+
+```{r rowcols-tidy-pipe, exercise = TRUE, exercise.setup = "unpop"}
+## extract values 5 through 7 of the world.pop variable
+
+```
+
+```{r rowcols-tidy-pipe-solution}
+UNpop %>%
+  slice(5:7) %>%
+  select(world.pop)
+```
+
+```{r rowcols-tidy-pipe-check}
+grade_result(
+  pass_if(~ identical(.result, UNpop %>%
+  slice(5:7) %>%
+  select(world.pop)))
+)
+```
+
+### Filtering
+
+While we've begun by using `slice()`, we'll generally use the more powerful `filter()` to subset rows by name, order, or other criteria. `filter()` is the parallel to `select()` but for rows instead of columns. 
+
+We'll commonly be using conditional statements to subset -- telling R to subset the data based on whether it's equal to (==), greater than (>), greater than or equal to (>=), less than (<), less than or equal to (<=), or not equal to (!=) a certain value. Note that you need to use two equal signs for equal to -- R treats one equal sign as an assignment similar to `<-`, so your subsetting will not work
+
+For example, if we want to know what the `myvar2` variable is only for rows where `myvar` is greater than 4, we would do:
+
+```{r, eval = FALSE, echo = TRUE}
+mydata %>% # begin with mydata, and then...
+  filter(myvar > 4) %>% # subset rows where myvar is greater than 4, and then...
+  select(myvar2) %>% # subset just the myvar2 column, and then...
+  pull() # return a vector
+```
+
+`pull()` is a tidyverse command that returns our results as a vector instead of a tibble -- sometimes helpful for next steps.
+
+
+#### Exercise 
+
+- Use `filter()`, `select()`, and `pull()` to subset the data to show the world population in 1980.
+
+
+```{r tidy-filter, exercise = TRUE, exercise.setup = "unpop"}
+## subset to find world.pop in 1980
+
+```
+
+```{r tidy-filter-solution}
+UNpop %>%
+  filter(year == 1980) %>%
+  select(world.pop) %>%
+  pull()
+```
+
+```{r tidy-filter-check}
+grade_code()
+```
+
+### Adding Variables
+
+Earlier, we turned `world.pop` into `pop.million`. What if we wanted to do this but keep it within the same dataframe (`UNpop`)? In tidyverse, we use the `mutate()` function to accomplish this. 
+
+`mutate()` takes in dataset (generally piped in), the name of the new column, and how that column should be populated. For example, if we wanted to create a new variable `myvar2` in our dataset `mydata` that was twice of the existing column `myvar`, we could do:
+
+```{r, eval = FALSE, echo = TRUE}
+mydata <- mydata %>% # begin with mydata, and then...
+  mutate(myvar2 = myvar*2) #create a new column myvar2 that is myvar*2
+```
+
+R does not automatically store the changes to our dataset (if you run it without storing it, R will just print out a new tibble), so here we store it back in our dataset using `<-` to make the changes permanent.
+
+#### Exercise
+
+- Use `mutate()` to create a new variable `world.pop.mill` that takes the variable `world.pop` from `UNpop` and divides it by 1000. Drop the `world.pop` variable (hint: select() can take inputs with a - in front to have R subset out those columns) and store the result in a new dataset, `UNpop.mill`
+
+```{r tidy-mutate, exercise = TRUE, exercise.setup = "unpop"}
+## create a new variable world.pop.mill
+
+```
+
+```{r tidy-mutate-solution}
+UNpop.mill <- UNpop %>%
+  mutate(world.pop.mill = world.pop/1000) %>%
+  select(-world.pop)
+```
+
+```{r tidy-mutate-check}
+grade_code()
+```
+
+
+### Summarizing Data
+
+Earlier, we used functions like `mean()` and `median()` directly to summarize parts of our data. In tidyverse, we'll generally use these inside `summarize()`. For instance, if we wanted to know the mean of `world.pop`, we could do:
+
+```{r, eval = FALSE, echo = TRUE}
+UNpop %>% # begin with  UNpop, and then...
+  summarize(mean.pop = mean(world.pop)) #take the mean of world.pop and call it mean.pop
+```
+
+Commonly, we'll pair `summarize()` with `group_by()`, which tells R to treat subsets of our data separately. For instance, we might be interested in comparing the average world population from the 1950s - 1970s to the 1980s-2010s. We first need to make a new variable `after.1980` that tells us which period our data belongs to, and then leverage `summarize()` and `group_by()`. In later tutorials, we'll learn how to automatically make variables like `after.1980` using conditionals and logicals. Here, we'll do it by hand (since we know the only years are 1950, 1960, 1970, 1980, 1990, 2000, and 2010)
+
+
+```{r, eval = FALSE, echo = TRUE}
+UNpop %>% 
+  mutate(after.1980 = c("before", "before", "before", "after", "after", "after", "after")) %>%
+  group_by(after.1980) %>%
+  summarize(mean.century.pop = mean(world.pop))
+```
+
+#### Exercise
+
+- Compare the average world population during the 2000s to the 1900s. First make a variable `century` that tells us which century each item belongs to, and then leverage `summarize()` and `group_by()`:
+
+```{r tidy-groupby, exercise = TRUE, exercise.setup = "unpop"}
+
+
+```
+
+```{r tidy-groupby-hint}
+UNpop %>% 
+  mutate(century = c("1990s", "1990s", "1990s", "1990s", "1990s", "2000s", "2000s")) %>%
+  group_by(..) %>%
+  summarize(mean.century.pop = mean(..))
+```
+
+
+```{r tidy-groupby-solution}
+UNpop %>% 
+  mutate(century = ifelse(year < 2000, "1900s", "2000s")) %>%
+  group_by(century) %>%
+  summarize(mean.century.pop = mean(world.pop))
+```
+
+```{r tidy-groupby-check}
+grade_code()
+```
 
 
 ## Submit
