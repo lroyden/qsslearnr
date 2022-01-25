@@ -450,6 +450,8 @@ grade_code()
 ```
 
 
+
+
 ### Subsetting a data frame (I)
 
 
@@ -551,9 +553,143 @@ UNpop[5:7, "world.pop"]
 grade_code()
 ```
 
+
+## Logical values: a detour
+
+Pretty soon (in the next section!), you'll be doing more complicated subsetting in R. To do this, it's helpful to understand a special type of object in R: the **logical**. There are two values associated with this type of object: `TRUE` and `FALSE` (where the uppercase is very important).
+
+#### Exercises
+
+- Create a vector called `x` that contains two `TRUE` values and two `FALSE` values in that order.
+- Find the sum of that vector.
+
+```{r logical, exercise = TRUE}
+## create a vector with two TRUE values and two FALSE values
+x <-
+
+## take the sum of this vector
+
+```
+
+
+```{r logical-hint}
+x <- c()
+
+sum(x)
+```
+
+
+```{r logical-check}
+grade_result_strict(
+  pass_if(~ identical(x, c(TRUE, TRUE, FALSE, FALSE))),
+  pass_if(~ identical(.result, 2L))
+)
+```
+
+
+- Create a vector called `z` that contains one `TRUE` values and three `FALSE` values in that order.
+- Find the mean of that vector.
+
+```{r logical2, exercise = TRUE}
+## create a vector with one TRUE values and three FALSE values
+z <-
+
+## take the mean of this vector
+
+```
+
+```{r logical2-hint}
+z <- c()
+
+mean(z)
+```
+
+
+```{r logical2-check}
+grade_result_strict(
+  pass_if(~ identical(z, c(TRUE, FALSE, FALSE, FALSE))),
+  pass_if(~ identical(.result, 0.25))
+)
+```
+
+
+### Comparing logicals
+
+
+We often combine logical statements using AND (`&`) and OR (`|`) in R. For AND statements, both expressions have to be true for the whole expression to be true:
+
+- `TRUE & FALSE`, `FALSE & TRUE`, and `FALSE & FALSE` are `FALSE`
+- `TRUE & TRUE` is `TRUE`
+
+For OR statements, either statement being true makes the whole expression true:
+
+- `TRUE | FALSE`, `FALSE | TRUE`, and `TRUE | TRUE` are `TRUE`
+- `FALSE | FALSE` is `FALSE`
+
+
+```{r comparing-logicals, echo=FALSE}
+question("What does expression `(TRUE | FALSE) & TRUE` evaluate to?",
+  answer("`TRUE`", correct = TRUE),
+  answer("`FALSE`"),
+  answer("`NA`")
+)
+```
+
+
+### Comparing objects
+
+
+There are several *relational operators* that allow us to compare objects in R. The most useful of these are the following:
+
+- `>` greater than, `>=` greater than or equal to
+- `<` less than, `<=` less than or equal to
+- `==` equal to
+- `!=` not equal to
+
+When we use these to compare two objects in R, we end us with a logical object. You can also compare a vector to a particular number.
+
+
+#### Exercises
+
+- Test if 10 is greater than 5.
+
+```{r gt-test, exercise=TRUE}
+
+```
+
+```{r gt-test-solution}
+10 > 5
+```
+
+```{r gt-test-check}
+grade_code()
+```
+
+- Test which values in the vector `x` is greater than or equal to 0.
+
+```{r compare, exercise = TRUE}
+## x vector
+x <- c(-2, -1, 0, 1, 2)
+
+## test which values of x are greater than or equal to 0
+
+```
+
+```{r compare-check}
+grade_result(
+  fail_if(~ identical(.result, x > 0),
+          "Did you forget the 'or equal to' part of the comparison?"),
+  pass_if(~ identical(.result, x >= 0))
+)
+```
+
+
+
+## Working with Data again
+
 ### Subsetting in tidyverse (III)
 
-tidyverse generally uses aptly-named functions instead of base R code. Here, instead of using brackets or dollar signs, we'll begin by using `slice()` and `select()`
+With this knowledge of logicals and conditionals, let's return to subsetting. tidyverse generally uses aptly-named functions instead of base R code. Here, instead of using brackets or dollar signs, we'll begin by using `slice()` and `select()`
 
 - `slice()` lets us filter rows by number or other criteria
 - `select()` lets us filter columns by name, number, or other criteria.
@@ -655,11 +791,13 @@ grade_result(
 )
 ```
 
+
+
 ### Filtering
 
 While we've begun by using `slice()`, we'll generally use the more powerful `filter()` to subset rows by name, order, or other criteria. `filter()` is the parallel to `select()` but for rows instead of columns. 
 
-We'll commonly be using conditional statements to subset -- telling R to subset the data based on whether it's equal to (==), greater than (>), greater than or equal to (>=), less than (<), less than or equal to (<=), or not equal to (!=) a certain value. Note that you need to use two equal signs for equal to -- R treats one equal sign as an assignment similar to `<-`, so your subsetting will not work
+We'll commonly be using conditional statements to subset -- telling R to subset the data based on whether it matches a certain condition (think about the logicals and conditional statements from earlier!)
 
 For example, if we want to know what the `myvar2` variable is only for rows where `myvar` is greater than 4, we would do:
 
