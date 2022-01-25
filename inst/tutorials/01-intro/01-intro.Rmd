@@ -1,7 +1,7 @@
 ---
-title: "QSS Tutorial 0: Introduction to R"
+title: "QSS Tutorial 1: Introduction to R"
 tutorial:
-  id: "00-intro"
+  id: "01-intro"
 output:
   learnr::tutorial:
     progressive: true
@@ -18,7 +18,7 @@ library(qsslearnr)
 library(tidyverse)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
-tut_reptitle <- "QSS Tutorial 0: Output Report"
+tut_reptitle <- "QSS Tutorial 1: Output Report"
 ```
 
 ## Basics of R
@@ -556,7 +556,7 @@ grade_code()
 
 ## Logical values: a detour
 
-Pretty soon (in the next section!), you'll be doing more complicated subsetting in R. To do this, it's helpful to understand a special type of object in R: the **logical**. There are two values associated with this type of object: `TRUE` and `FALSE` (where the uppercase is very important).
+Pretty soon (in the next section!), you'll be doing more complicated subsetting in R. To do this, it's helpful to understand a special type of object in R: the **logical**. There are two values associated with this type of object: `TRUE` and `FALSE` (where the uppercase is very important). R will frequently coerce **logicals** into a binary variable where `TRUE = 1` and `FALSE=0`, allowing us to perform straightforward numeric operations.
 
 #### Exercises
 
@@ -646,7 +646,7 @@ There are several *relational operators* that allow us to compare objects in R. 
 - `==` equal to
 - `!=` not equal to
 
-When we use these to compare two objects in R, we end us with a logical object. You can also compare a vector to a particular number.
+When we use these to compare two objects in R, we end up with a logical object. You can also compare a vector to a particular number.
 
 
 #### Exercises
@@ -903,7 +903,7 @@ UNpop %>%
 
 ```{r tidy-groupby-solution}
 UNpop %>% 
-  mutate(century = ifelse(year < 2000, "1900s", "2000s")) %>%
+  mutate(century = c("1990s", "1990s", "1990s", "1990s", "1990s", "2000s", "2000s")) %>%
   group_by(century) %>%
   summarize(mean.century.pop = mean(world.pop))
 ```
