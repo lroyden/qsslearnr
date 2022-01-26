@@ -193,6 +193,10 @@ resume %>%
   pivot_wider(names_from = call, values_from = n)
 ```
 
+```{r crosstab-check}
+grade_code()
+```
+
 ### Proportions in crosstabs
 
 Another task we often want to do is to convert the counts in a cross-tab into proportions of the overall data. To do that, all we have to do is modify the `summarize()` call using `nrow()`:
@@ -228,6 +232,10 @@ resume %>%
   pivot_wider(names_from = call, values_from = n)
 ```
 
+```{r crosstab_prop-check}
+grade_code()
+```
+
 
 ## Means and Differences in Means by Groups
 
@@ -259,6 +267,10 @@ resume %>%
 resume %>%
   group_by(race) %>%
   summarize(across(call, mean))
+```
+
+```{r avg_by_group-check}
+grade_code()
 ```
 
 ### Pulling the means into a vector
@@ -294,6 +306,10 @@ resume %>%
   group_by(race) %>%
   summarize(across(call, mean)) %>%
   pull(call, name = race)
+```
+
+```{r avgs_vec-check}
+grade_code()
 ```
 
 ### Calculating the difference in means/average treatment effect
@@ -333,6 +349,10 @@ avgs <- resume %>%
 avgs["black"] - avgs["white"]
 ```
 
+```{r diff_in_mean-check}
+grade_code()
+```
+
 ### Calculating difference in means within groups
 
 Another common task is to calculate the difference in means between groups *within levels of another group*. For instance, we might want to know the effect of treatment within levels of gender or ideology. This is slightly more tricky than the last approach since we can't just use `pull()`. Instead, we'll need to use `pivot_wider` after we summarize and then create a new variable that calculates the differences. 
@@ -368,6 +388,10 @@ resume %>%
   summarize(across(call, mean)) %>%
   pivot_wider(names_from = race, values_from = call) %>%
   mutate(diff_in_means = black - white)
+```
+
+```{r diff_by_gender-check}
+grade_code()
 ```
 
 ## More Logicals in R
@@ -585,7 +609,6 @@ ages <- ages %>%
                           TRUE ~ "neither"))
 
 ```
-
 
 
 #### Exercise
