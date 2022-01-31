@@ -21,6 +21,7 @@ tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 data(resume, package = "qss")
+tut_reptitle <- "QSS Tutorial 2: Output Report"
 resume <- as_tibble(resume)
 ```
 
