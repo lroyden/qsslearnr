@@ -1,5 +1,7 @@
 ---
 title: "QSS Tutorial 2: Causality "
+tutorial:
+  id: "02-causality"
 output:
   learnr::tutorial:
     progressive: true
