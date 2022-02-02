@@ -477,7 +477,7 @@ ages <- c(31, 20, 43, 45, 41, 46, 28, 49, 61, 19, 39)
 ages <- data.frame(ages)
 ```
 
-```{r logsubset-tidy, exercise = TRUE, exercise.setup = "generate-ages"}
+```{r logsubset-tidy, exercise = TRUE, exercise.setup = "generate-ages-tidy"}
 ## calculate the average age among the college-aged in the sample
 
 ```
