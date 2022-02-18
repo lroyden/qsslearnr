@@ -402,6 +402,11 @@ ggplot(star, aes(x = g4math)) +
 
 ```
 
+```{r hist-nice-check}
+grade_code("Yay!")
+```
+
+
 ### Adding lines and text to a plot
 
 We'll often want to add more information to a plot to make it even more readable. You can do that with commands that add to the current plot, such as `geom_vline` and `annotate`.

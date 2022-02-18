@@ -253,6 +253,11 @@ star %>%
   ggtitle("Fourth Grade Math vs Reading Scores")
 ```
 
+```{r niceplot-check}
+grade_code("Amazing!")
+```
+
+
 ## Submit
 
 ```{r context="setup"}
